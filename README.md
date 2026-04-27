@@ -19,12 +19,7 @@ hardware.
 
 ## What it does
 
-```
-PDF / image  ─►  watcher  ─►  vision LLM  ─►  result.json  ─►  Kuzu graph  ─►  queries
-                  (daemon)    (Qwen3-VL via                    (entity-resolved
-                              llama.cpp)                        Vendor / Customer /
-                                                                Invoice / LineItem)
-```
+![Architecture](docs/images/architecture.png)
 
 - **Folder watcher daemon** monitors `~/invoice-inbox/{pdf,images}` and batches
   new files for processing.
@@ -247,6 +242,8 @@ Vendor and Customer IDs use a deterministic ER waterfall:
 `tax_id` → `email` → `name+postal_code+country`. So the same vendor across
 multiple invoices collapses to one node even when the LLM extracted slightly
 different name spellings.
+
+![Entity resolution waterfall](docs/images/entity_resolution.png)
 
 ## Run as a systemd user service (optional)
 

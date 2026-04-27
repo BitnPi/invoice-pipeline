@@ -1,0 +1,27 @@
+flowchart TD
+    START([Vendor or Customer<br/>extracted by LLM])
+    TAX{tax_id<br/>present?}
+    EMAIL{email<br/>present?}
+    NAME[Use<br/>name + postal_code + country]
+    HASH_TAX[hash: party_type · 'tax' · tax_id]
+    HASH_EMAIL[hash: party_type · 'email' · normalized_email]
+    HASH_NAME[hash: party_type · 'name' · normalized_name + postal + country]
+    NODE([Stable Party ID<br/>same vendor across<br/>invoices = same node])
+
+    START --> TAX
+    TAX -->|yes| HASH_TAX
+    TAX -->|no| EMAIL
+    EMAIL -->|yes| HASH_EMAIL
+    EMAIL -->|no| NAME
+    NAME --> HASH_NAME
+    HASH_TAX --> NODE
+    HASH_EMAIL --> NODE
+    HASH_NAME --> NODE
+
+    classDef decision fill:#fef3c7,stroke:#f59e0b,color:#000
+    classDef action fill:#dbeafe,stroke:#3b82f6,color:#000
+    classDef terminal fill:#d1fae5,stroke:#10b981,color:#000
+
+    class TAX,EMAIL decision
+    class HASH_TAX,HASH_EMAIL,HASH_NAME,NAME action
+    class START,NODE terminal

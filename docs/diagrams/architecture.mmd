@@ -1,0 +1,49 @@
+flowchart LR
+    subgraph SOURCE["Sources"]
+        PDF[PDF / Image<br/>invoices]
+    end
+
+    subgraph PIPELINE["Pipeline daemon (Python)"]
+        WATCH[Folder Watcher<br/>poll + batch]
+        PROC[Job Processor<br/>workers, retries]
+        ARCHIVE[(Archive<br/>by type & date)]
+    end
+
+    subgraph LLM["Local inference"]
+        SERVER[llama-server<br/>on-demand]
+        MODEL[Qwen3-VL-4B<br/>vision LLM]
+        SERVER --- MODEL
+    end
+
+    subgraph STORAGE["Storage"]
+        JSON[result.json<br/>per invoice]
+        GRAPH[(Kuzu<br/>property graph)]
+    end
+
+    subgraph QUERY["Query layer"]
+        EXP[Kuzu Explorer<br/>web UI]
+        CLI[Cypher CLI<br/>scripts/queries.py]
+        API[Python kuzu lib<br/>direct queries]
+    end
+
+    PDF --> WATCH
+    WATCH --> PROC
+    PROC -->|HTTP| SERVER
+    PROC --> JSON
+    PROC --> ARCHIVE
+    JSON -->|auto-ingest<br/>+ entity resolution| GRAPH
+    GRAPH --> EXP
+    GRAPH --> CLI
+    GRAPH --> API
+
+    classDef source fill:#fef3c7,stroke:#f59e0b,color:#000
+    classDef pipe fill:#dbeafe,stroke:#3b82f6,color:#000
+    classDef llm fill:#fce7f3,stroke:#ec4899,color:#000
+    classDef store fill:#d1fae5,stroke:#10b981,color:#000
+    classDef query fill:#e9d5ff,stroke:#a855f7,color:#000
+
+    class PDF source
+    class WATCH,PROC,ARCHIVE pipe
+    class SERVER,MODEL llm
+    class JSON,GRAPH store
+    class EXP,CLI,API query
