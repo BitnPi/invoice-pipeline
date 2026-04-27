@@ -1,0 +1,50 @@
+# Invoice Pipeline Configuration
+
+# Paths to watch for new files
+watch_folders:
+  - ~/invoice-inbox/pdf
+  - ~/invoice-inbox/images
+
+# Archive folder for processed files
+archive_folder: ~/invoice-inbox/archive
+
+# Output folder for results (subfolder per file)
+output_folder: ~/invoice-inbox/output
+
+# Knowledge graph index
+graph:
+  db_path: ~/invoice-inbox/graph_db
+  auto_ingest: true
+
+# Llama server configuration
+server:
+  binary: ~/Projects/llama.cpp/build/bin/llama-server
+  model: ~/Projects/models/Qwen3-VL-4B-Instruct-Q4_K_M.gguf
+  mmproj: ~/Projects/models/mmproj-Qwen3-VL-4B-Instruct-F16.gguf
+  port: 8081
+  host: 127.0.0.1
+  gpu_layers: 99
+  context_size: 32768
+  parallel_slots: 4
+  startup_timeout: 120  # seconds
+
+# Invoice processor configuration
+processor:
+  venv_path: ~/Projects/invoice-processor/.venv
+  workers: 4
+  
+# Watcher configuration
+watcher:
+  poll_interval: 5  # seconds
+  batch_delay: 10   # seconds to wait for more files before processing
+  max_batch_size: 50  # maximum files per batch
+
+# Supported file extensions
+extensions:
+  pdf: [".pdf"]
+  image: [".png", ".jpg", ".jpeg", ".webp", ".tiff", ".bmp"]
+
+# Logging
+logging:
+  level: INFO
+  file: ~/invoice-inbox/logs/pipeline.log

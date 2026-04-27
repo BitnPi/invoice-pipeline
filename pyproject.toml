@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "invoice-pipeline"
+version = "1.0.0"
+description = "Automated invoice processing pipeline with folder watching and llama server management"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [
+    {name = "Farooq Ahmad", email = "farooq.kaiser@gmail.com"}
+]
+
+dependencies = [
+    "pyyaml>=6.0",
+    "requests>=2.28.0",
+    "watchdog>=3.0.0",
+    "kuzu>=0.8.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+]
+
+[project.scripts]
+invoice-pipeline = "pipeline.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["pipeline*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]

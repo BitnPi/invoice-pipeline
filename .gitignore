@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# Kuzu graph DB
+*.kuzu*
+.kuzu*
+test_db
+*_db/
+*.daemon.lock
+
+# Local config overrides
+*.local.yaml
+
+# Editor / OS
+.vscode/
+.idea/
+.claude/
+.DS_Store

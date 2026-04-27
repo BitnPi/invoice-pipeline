@@ -1,0 +1,26 @@
+[Unit]
+Description=Invoice Processing Pipeline
+Documentation=https://github.com/BitnPi/invoice-pipeline
+After=network.target
+
+[Service]
+Type=simple
+User=%i
+WorkingDirectory=/home/%i/invoice-pipeline
+ExecStart=/home/%i/invoice-pipeline/.venv/bin/invoice-pipeline run --daemon
+Restart=on-failure
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+# Environment
+Environment=HOME=/home/%i
+
+# Hardening
+NoNewPrivileges=true
+ProtectSystem=strict
+ReadWritePaths=/home/%i/invoice-inbox
+ReadWritePaths=/home/%i/invoice-pipeline
+
+[Install]
+WantedBy=default.target

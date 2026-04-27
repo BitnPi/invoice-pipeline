@@ -1,0 +1,40 @@
+# Invoice Pipeline Configuration — GLM-OCR variant
+
+watch_folders:
+  - ~/invoice-inbox/pdf
+  - ~/invoice-inbox/images
+
+archive_folder: ~/invoice-inbox/archive
+output_folder: ~/invoice-inbox/output
+
+graph:
+  db_path: ~/invoice-inbox/graph_db
+  auto_ingest: true
+
+server:
+  binary: ~/Projects/llama.cpp/build/bin/llama-server
+  model: ~/Projects/models/GLM-OCR-Q8_0.gguf
+  mmproj: ~/Projects/models/mmproj-GLM-OCR-Q8_0.gguf
+  port: 8081
+  host: 127.0.0.1
+  gpu_layers: 99
+  context_size: 32768
+  parallel_slots: 4
+  startup_timeout: 120
+
+processor:
+  venv_path: ~/Projects/invoice-processor/.venv
+  workers: 4
+
+watcher:
+  poll_interval: 5
+  batch_delay: 10
+  max_batch_size: 50
+
+extensions:
+  pdf: [".pdf"]
+  image: [".png", ".jpg", ".jpeg", ".webp", ".tiff", ".bmp"]
+
+logging:
+  level: INFO
+  file: ~/invoice-inbox/logs/pipeline-glm.log
