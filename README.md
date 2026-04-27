@@ -9,6 +9,14 @@ queries.
 No cloud APIs, no SaaS, no per-token billing. Everything runs on your own
 hardware.
 
+### Here is the query — ad-hoc Cypher against your own invoices
+
+![Cypher query — spend by vendor, ranked](docs/images/kuzu-explorer-query.png)
+
+### Here is the schema — a property graph the LLM populates automatically
+
+![Kuzu Explorer schema view](docs/images/kuzu-explorer-schema.png)
+
 ## What it does
 
 ```
